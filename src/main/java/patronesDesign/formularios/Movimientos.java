@@ -5,18 +5,50 @@
  */
 package patronesDesign.formularios;
 
+import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import static java.time.LocalDate.now;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.function.BiConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import patronesDesign.entidades.Cuenta;
+import patronesDesign.entidades.TipoMovimiento;
+import patronesDesign.entidades.empleado;
+import patronesDesign.entidades.movimiento;
+import patronesDesign.entidades.transferenciaMovimiento;
+import patronesDesign.logica.CuentaLogica;
+import patronesDesign.logica.EmpleadoLogica;
+import patronesDesign.logica.movimientosLogica;
+import patronesDesign.operaciones.MovimientoOperacion;
+
 /**
  *
  * @author Jersson Chilon
  */
 public class Movimientos extends javax.swing.JDialog {
 
-    /**
-     * Creates new form Movimientos
-     */
+    private ArrayList<TipoMovimiento> lista;
+    private ArrayList<Cuenta> listaCuenta;
+    private Cuenta cuenta;
+    private Cuenta cuentaDestino;
+    private TipoMovimiento t;
+    private boolean estado = false;
+    private ArrayList<empleado> empleado;
+    private empleado e;
+
     public Movimientos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        llenarCuenta(null, lsCuenta);
+        llenarAccion();
+        panelDestino(estado);
+
     }
 
     /**
@@ -30,8 +62,34 @@ public class Movimientos extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        lsAccion = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        txtAccion = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        txtSaldo = new javax.swing.JTextField();
+        lsCuenta = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtFecha = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        txtNumeroMovimiento = new javax.swing.JTextField();
+        panelDestino = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        txtSaldoDestino = new javax.swing.JTextField();
+        lsCuentaDestino = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtFechaDestino = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        fechaOperacion = new javax.swing.JTextField();
+        lsEmpleado = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        txtImporte = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -39,10 +97,21 @@ public class Movimientos extends javax.swing.JDialog {
 
         jLabel1.setText("Accion");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        lsAccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
+        lsAccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                lsAccionActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Tipo de Acción:");
+
+        txtAccion.setEnabled(false);
+
+        jButton2.setText("Confirmar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -51,11 +120,20 @@ public class Movimientos extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(232, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lsAccion, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtAccion))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -63,19 +141,198 @@ public class Movimientos extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lsAccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtAccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel3.setText("C° Cuenta");
+
+        lsCuenta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
+        lsCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lsCuentaActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Saldo:");
+
+        jLabel5.setText("Fecha de Creación:");
+
+        jLabel12.setText("N° Movimiento");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lsCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFecha)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel4))
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtNumeroMovimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                    .addComponent(txtSaldo))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lsCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(txtNumeroMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelDestino.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel6.setText("C° Cuenta");
+
+        lsCuentaDestino.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
+        lsCuentaDestino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lsCuentaDestinoActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Saldo:");
+
+        jLabel8.setText("Fecha de Creación:");
+
+        javax.swing.GroupLayout panelDestinoLayout = new javax.swing.GroupLayout(panelDestino);
+        panelDestino.setLayout(panelDestinoLayout);
+        panelDestinoLayout.setHorizontalGroup(
+            panelDestinoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelDestinoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelDestinoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelDestinoLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lsCuentaDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelDestinoLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFechaDestino)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtSaldoDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        panelDestinoLayout.setVerticalGroup(
+            panelDestinoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelDestinoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelDestinoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(lsCuentaDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtSaldoDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelDestinoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtFechaDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel9.setText("Fecha:");
+
+        jLabel10.setText("Empleado:");
+
+        fechaOperacion.setEnabled(false);
+        fechaOperacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fechaOperacionActionPerformed(evt);
+            }
+        });
+
+        lsEmpleado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
+        lsEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lsEmpleadoActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Importe:");
+
+        jButton1.setText("Realizar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fechaOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtImporte)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lsEmpleado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10)
+                    .addComponent(fechaOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lsEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -84,30 +341,148 @@ public class Movimientos extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(216, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    void llenarAccion()
-    {
-        
+    void llenarAccion() {
+        lista = movimientosLogica.listMovimientos();
+        for (TipoMovimiento t : lista) {
+            lsAccion.addItem(t.toString());
+        }
     }
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+
+    void llenarEmpleado() {
+        empleado = EmpleadoLogica.listEmpleado();
+        int size = empleado.size();
+        for (empleado e : empleado) {
+            lsEmpleado.addItem(e.getNombre());
+        }
+    }
+
+    void panelDestino(boolean estado) {
+        panelDestino.setVisible(estado);
+    }
+
+    void llenarCuenta(String exepcion, JComboBox select) {
+        try {
+            listaCuenta = CuentaLogica.listCuenta();
+            for (Cuenta l : listaCuenta) {
+                if (l.getCuenCodigo() != exepcion) {
+                    select.addItem(l.getCuenCodigo());
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Movimientos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    void intercambio(TipoMovimiento tA, TipoMovimiento tN) {
+
+    }
+    private void lsAccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lsAccionActionPerformed
+        if (lsAccion.getSelectedIndex() == 0) {
+            txtAccion.setText("");
+        } else {
+            int i = lsAccion.getSelectedIndex();
+            t = lista.get(i - 1);
+            String descripcion = t.getTipoDescripcion().toUpperCase();
+            if (descripcion.equals("TRANSFERENCIA")) {
+                estado = true;
+                llenarCuenta(cuenta.getCuenCodigo(), lsCuentaDestino);
+            } else {
+                estado = false;
+            }
+            panelDestino(estado);
+            txtAccion.setText(t.getTipoAccion());
+        }
+    }//GEN-LAST:event_lsAccionActionPerformed
+
+    private void lsCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lsCuentaActionPerformed
+        if (lsCuenta.getSelectedIndex() == 0) {
+            txtSaldo.setText("");
+            txtFecha.setText("");
+        } else {
+            int i = lsCuenta.getSelectedIndex();
+            cuenta = listaCuenta.get(i - 1);
+            txtSaldo.setText(String.valueOf(cuenta.getCuenSaldo()));
+            txtFecha.setText(cuenta.getCuenFechaCreacion().toString());
+        }    }//GEN-LAST:event_lsCuentaActionPerformed
+
+    private void lsCuentaDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lsCuentaDestinoActionPerformed
+        if (lsCuentaDestino.getSelectedIndex() == 0) {
+            txtSaldoDestino.setText("");
+            txtFechaDestino.setText("");
+        } else {
+            int i = lsCuentaDestino.getSelectedIndex();
+            cuentaDestino = listaCuenta.get(i - 1);
+            txtSaldoDestino.setText(String.valueOf(cuentaDestino.getCuenSaldo()));
+            txtFechaDestino.setText(cuentaDestino.getCuenFechaCreacion().toString());
+        }
+    }//GEN-LAST:event_lsCuentaDestinoActionPerformed
+
+    private void fechaOperacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fechaOperacionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_fechaOperacionActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        llenarEmpleado();
+        fechaOperacion.setText(new Date().toString());
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (lsEmpleado.getSelectedIndex() != 0) {
+            int i = lsEmpleado.getSelectedIndex();
+            e = empleado.get(i - 1);
+        }
+        int numeroMov = Integer.parseInt(txtNumeroMovimiento.getText());
+        LocalDate fechaMov = now();
+        float importe = Float.parseFloat(txtImporte.getText());
+        String destino = "";
+        if (estado) {
+            destino = cuentaDestino.getCuenCodigo();
+        }
+        System.out.println(t.getTipoDescripcion());
+        TipoMovimiento tipo = MovimientoOperacion.seleccion(t.getTipoDescripcion().toUpperCase(), destino);
+        tipo.setCuenta(cuenta);
+        tipo.setMoviNumero(numeroMov);
+        tipo.setMoviFecha(fechaMov);
+        tipo.setEmpleado(e);
+        tipo.setTipoCodigo(t.getTipoCodigo());
+        tipo.setMovImporte(importe);
+        boolean accion = movimientosLogica.saveMovimiento(tipo, destino);
+        if (accion) {
+            JOptionPane.showMessageDialog(null, "Movimiento Guardado");
+        } else {
+            JOptionPane.showMessageDialog(null, "Movimiento Rechazado");
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void lsEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lsEmpleadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lsEmpleadoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,9 +527,35 @@ public class Movimientos extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JTextField fechaOperacion;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JComboBox<String> lsAccion;
+    private javax.swing.JComboBox<String> lsCuenta;
+    private javax.swing.JComboBox<String> lsCuentaDestino;
+    private javax.swing.JComboBox<String> lsEmpleado;
+    private javax.swing.JPanel panelDestino;
+    private javax.swing.JTextField txtAccion;
+    private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtFechaDestino;
+    private javax.swing.JTextField txtImporte;
+    private javax.swing.JTextField txtNumeroMovimiento;
+    private javax.swing.JTextField txtSaldo;
+    private javax.swing.JTextField txtSaldoDestino;
     // End of variables declaration//GEN-END:variables
 }

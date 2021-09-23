@@ -6,23 +6,33 @@ import patronesDesign.logica.CuentaLogica;
 
 public class transferenciaMovimiento extends TipoMovimiento {
 
-	private String cuentaReferencia;
+    private String cuentaReferencia="";
 
-	public transferenciaMovimiento(String cuentaReferencia) {
-		this.cuentaReferencia = cuentaReferencia;
-	}
+    public transferenciaMovimiento(String c) {
+        this.cuentaReferencia=c;
+    }
 
-	@Override
-	public boolean movimiento() {
-		boolean accion=false;
-		try {
-			Cuenta cDestion=CuentaLogica.findAccountByCod(cuentaReferencia);
-			accion=CuentaLogica.movimiento(this.getCuenta().getCuenCodigo(), cuentaReferencia, 1, this.getMovImporte());
-		} catch (SQLException e) {
-			accion=false;
-			e.printStackTrace();
-		}
-		return accion;
-	}
+    
+    
+    public void setCuentaReferencia(String cuentaReferencia) {
+        this.cuentaReferencia = cuentaReferencia;
+    }
+
+    public String getCuentaReferencia() {
+        return cuentaReferencia;
+    }
+
+    @Override
+    public boolean movimiento() {
+        boolean accion = false;
+        try {
+            Cuenta cDestion = CuentaLogica.findAccountByCod(getCuentaReferencia());
+            accion = CuentaLogica.movimiento(this.getCuenta().getCuenCodigo(), getCuentaReferencia(), 1, this.getMovImporte());
+        } catch (SQLException e) {
+            accion = false;
+            e.printStackTrace();
+        }
+        return accion;
+    }
 
 }
