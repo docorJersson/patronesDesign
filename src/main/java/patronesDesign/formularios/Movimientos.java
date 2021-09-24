@@ -44,11 +44,14 @@ public class Movimientos extends javax.swing.JDialog {
 
     public Movimientos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        setLocationRelativeTo(null);
+        JOptionPane.showMessageDialog(null, "Buen día estimado cliente. \n Por motivos técnicos la plataforma solo está habilidada para las siguientes operaciones: \n 1:Depósitos \n 2:Retiros \n 3:Transferencias \n De antemano le ofrecemos nuestras más sentidas disculpas y le hacemos saber que estamos trabajando en ello.");
         initComponents();
         llenarCuenta(null, lsCuenta);
         llenarAccion();
         panelDestino(estado);
         panelAccion(false);
+        detalleMovimiento(false);
 
     }
 
@@ -90,7 +93,13 @@ public class Movimientos extends javax.swing.JDialog {
         lsEmpleado = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         txtImporte = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnRealizar = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -297,10 +306,10 @@ public class Movimientos extends javax.swing.JDialog {
 
         jLabel11.setText("Importe:");
 
-        jButton1.setText("Realizar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRealizar.setText("Realizar");
+        btnRealizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnRealizarActionPerformed(evt);
             }
         });
 
@@ -327,7 +336,7 @@ public class Movimientos extends javax.swing.JDialog {
                         .addComponent(lsEmpleado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(btnRealizar)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -343,9 +352,33 @@ public class Movimientos extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(txtImporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnRealizar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel1.setBackground(new java.awt.Color(128, 89, 89));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel13.setFont(new java.awt.Font("Sitka Subheading", 0, 11)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel13.setText("Banco");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 270, -1, -1));
+
+        jLabel14.setFont(new java.awt.Font("Sitka Subheading", 0, 22)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setText("EuroBank");
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, -1, -1));
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 7)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("Tu banco de confianza ....");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 310, -1, -1));
+
+        jLabel16.setFont(new java.awt.Font("Sitka Subheading", 0, 22)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel16.setText("Movimientos");
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 210, 10));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -358,12 +391,13 @@ public class Movimientos extends javax.swing.JDialog {
                     .addComponent(pAccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pAccion, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -371,18 +405,19 @@ public class Movimientos extends javax.swing.JDialog {
                 .addComponent(panelDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(11, 11, 11))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-   
-    void panelAccion(boolean e)
-    {
+
+    void panelAccion(boolean e) {
         lsAccion.setEnabled(e);
         txtAccion.setEnabled(e);
         btnAccion.setEnabled(e);
     }
+
     void llenarAccion() {
         lista = movimientosLogica.listMovimientos();
         for (TipoMovimiento t : lista) {
@@ -423,6 +458,10 @@ public class Movimientos extends javax.swing.JDialog {
         if (lsAccion.getSelectedIndex() == 0) {
             txtAccion.setText("");
         } else {
+            if(lsAccion.getSelectedItem().toString().toUpperCase().equals("TRANSFERENCIA") || lsAccion.getSelectedItem().toString().toUpperCase().equals("DEPOSITO") || lsAccion.getSelectedItem().toString().toUpperCase().equals("RETIRO"))
+            {
+                
+            
             int i = lsAccion.getSelectedIndex();
             t = lista.get(i - 1);
             String descripcion = t.getTipoDescripcion().toUpperCase();
@@ -433,8 +472,20 @@ public class Movimientos extends javax.swing.JDialog {
                 estado = false;
             }
             txtAccion.setText(t.getTipoAccion());
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Operaciones disponibles \n 1:Depósitos \n 2:Retiros \n 3:Transferencias \n De antemano le ofrecemos nuestras más sentidas disculpas y le hacemos saber que estamos trabajando en ello.");
+                lsAccion.setSelectedIndex(0);
+            }
         }
     }//GEN-LAST:event_lsAccionActionPerformed
+    void detalleMovimiento(boolean e)
+    {
+        lsEmpleado.setEnabled(e);
+        btnRealizar.setEnabled(e);
+        txtImporte.setEnabled(e);
+    }
     void numeroMovimiento(String cuenta) {
         txtNumeroMovimiento.setText("");
         int numero = movimientosLogica.numeroMovimiento(cuenta);
@@ -472,6 +523,7 @@ public class Movimientos extends javax.swing.JDialog {
     private void btnAccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccionActionPerformed
         panelDestino(estado);
         llenarEmpleado();
+        detalleMovimiento(true);
         fechaOperacion.setText(new Date().toString());
 
     }//GEN-LAST:event_btnAccionActionPerformed
@@ -483,7 +535,7 @@ public class Movimientos extends javax.swing.JDialog {
             Logger.getLogger(MainBank.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnRealizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarActionPerformed
         if (lsEmpleado.getSelectedIndex() != 0) {
             int i = lsEmpleado.getSelectedIndex();
             e = empleado.get(i - 1);
@@ -511,7 +563,7 @@ public class Movimientos extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Movimiento Rechazado");
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnRealizarActionPerformed
 
     private void lsEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lsEmpleadoActionPerformed
         // TODO add your handling code here:
@@ -561,12 +613,16 @@ public class Movimientos extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAccion;
+    private javax.swing.JButton btnRealizar;
     private javax.swing.JTextField fechaOperacion;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -575,8 +631,10 @@ public class Movimientos extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JComboBox<String> lsAccion;
     private javax.swing.JComboBox<String> lsCuenta;
     private javax.swing.JComboBox<String> lsCuentaDestino;
