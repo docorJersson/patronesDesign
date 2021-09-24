@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import patronesDesign.entidades.Cuenta;
 import patronesDesign.logica.CuentaLogica;
@@ -22,9 +23,9 @@ public class MainBank extends javax.swing.JFrame {
     /**
      * Creates new form MainBank
      */
-    DefaultTableModel modelo = new DefaultTableModel();
-    CuentaLogica cl;
-    public String[] listaEmcabezados = {"C° Cuenta", "C° Moneda", "C° Sucursal", "C° Empleado", "C° Cliente", "Saldo", "Fecha", "Estado", "Con Mov", "Clave"};
+    static DefaultTableModel modelo = new DefaultTableModel();
+    static CuentaLogica cl;
+    static String[] listaEmcabezados = {"C° Cuenta", "C° Moneda", "C° Sucursal", "C° Empleado", "C° Cliente", "Saldo", "Fecha", "Estado", "Con Mov", "Clave"};
 
     public MainBank() {
         initComponents();
@@ -35,7 +36,7 @@ public class MainBank extends javax.swing.JFrame {
         }
     }
 
-    void listar() throws SQLException {
+    public static void listar() throws SQLException {
         modelo.setColumnIdentifiers(listaEmcabezados);
         ArrayList<Cuenta> lista = cl.listCuenta();
         Object[] datos = new Object[listaEmcabezados.length+1];
@@ -68,9 +69,6 @@ public class MainBank extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaCuenta = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -88,12 +86,6 @@ public class MainBank extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaCuenta);
 
-        jLabel1.setText("Buscar:");
-
-        jButton1.setText("Buscar");
-
-        jTextField1.setText("jTextField1");
-
         jButton2.setText("Movimientos");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,30 +99,19 @@ public class MainBank extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(26, 26, 26))))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 662, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(30, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton2))
-                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -139,8 +120,9 @@ public class MainBank extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Movimientos m=new Movimientos(this, false);
+        Movimientos m=new Movimientos(this, true);
         m.show();
+       
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -153,13 +135,8 @@ public class MainBank extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
+            javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(MainBank.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(MainBank.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -179,11 +156,8 @@ public class MainBank extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTable tablaCuenta;
+    private static javax.swing.JTable tablaCuenta;
     // End of variables declaration//GEN-END:variables
 }

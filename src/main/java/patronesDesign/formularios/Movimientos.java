@@ -48,6 +48,7 @@ public class Movimientos extends javax.swing.JDialog {
         llenarCuenta(null, lsCuenta);
         llenarAccion();
         panelDestino(estado);
+        panelAccion(false);
 
     }
 
@@ -60,12 +61,12 @@ public class Movimientos extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        pAccion = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lsAccion = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         txtAccion = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        btnAccion = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtSaldo = new javax.swing.JTextField();
@@ -93,7 +94,8 @@ public class Movimientos extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        pAccion.setBackground(new java.awt.Color(255, 255, 255));
+        pAccion.setEnabled(false);
 
         jLabel1.setText("Accion");
 
@@ -108,21 +110,21 @@ public class Movimientos extends javax.swing.JDialog {
 
         txtAccion.setEnabled(false);
 
-        jButton2.setText("Confirmar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAccion.setText("Confirmar");
+        btnAccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAccionActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
+        javax.swing.GroupLayout pAccionLayout = new javax.swing.GroupLayout(pAccion);
+        pAccion.setLayout(pAccionLayout);
+        pAccionLayout.setHorizontalGroup(
+            pAccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pAccionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pAccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pAccionLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lsAccion, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -130,28 +132,30 @@ public class Movimientos extends javax.swing.JDialog {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtAccion))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
+                    .addGroup(pAccionLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnAccion)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pAccionLayout.setVerticalGroup(
+            pAccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pAccionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pAccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lsAccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(txtAccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addComponent(btnAccion)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel3.setText("C° Cuenta");
+
+        txtSaldo.setEnabled(false);
 
         lsCuenta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
         lsCuenta.addActionListener(new java.awt.event.ActionListener() {
@@ -164,7 +168,11 @@ public class Movimientos extends javax.swing.JDialog {
 
         jLabel5.setText("Fecha de Creación:");
 
+        txtFecha.setEnabled(false);
+
         jLabel12.setText("N° Movimiento");
+
+        txtNumeroMovimiento.setEnabled(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -215,6 +223,8 @@ public class Movimientos extends javax.swing.JDialog {
 
         jLabel6.setText("C° Cuenta");
 
+        txtSaldoDestino.setEnabled(false);
+
         lsCuentaDestino.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
         lsCuentaDestino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,6 +235,8 @@ public class Movimientos extends javax.swing.JDialog {
         jLabel7.setText("Saldo:");
 
         jLabel8.setText("Fecha de Creación:");
+
+        txtFechaDestino.setEnabled(false);
 
         javax.swing.GroupLayout panelDestinoLayout = new javax.swing.GroupLayout(panelDestino);
         panelDestino.setLayout(panelDestinoLayout);
@@ -343,7 +355,7 @@ public class Movimientos extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pAccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -354,7 +366,7 @@ public class Movimientos extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pAccion, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -364,6 +376,13 @@ public class Movimientos extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+   
+    void panelAccion(boolean e)
+    {
+        lsAccion.setEnabled(e);
+        txtAccion.setEnabled(e);
+        btnAccion.setEnabled(e);
+    }
     void llenarAccion() {
         lista = movimientosLogica.listMovimientos();
         for (TipoMovimiento t : lista) {
@@ -387,7 +406,7 @@ public class Movimientos extends javax.swing.JDialog {
         try {
             listaCuenta = CuentaLogica.listCuenta();
             for (Cuenta l : listaCuenta) {
-                if (l.getCuenCodigo() != exepcion) {
+                if (!l.getCuenCodigo().equals(exepcion)) {
                     select.addItem(l.getCuenCodigo());
                 }
             }
@@ -413,11 +432,14 @@ public class Movimientos extends javax.swing.JDialog {
             } else {
                 estado = false;
             }
-            panelDestino(estado);
             txtAccion.setText(t.getTipoAccion());
         }
     }//GEN-LAST:event_lsAccionActionPerformed
-
+    void numeroMovimiento(String cuenta) {
+        txtNumeroMovimiento.setText("");
+        int numero = movimientosLogica.numeroMovimiento(cuenta);
+        txtNumeroMovimiento.setText(String.valueOf(numero));
+    }
     private void lsCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lsCuentaActionPerformed
         if (lsCuenta.getSelectedIndex() == 0) {
             txtSaldo.setText("");
@@ -425,8 +447,10 @@ public class Movimientos extends javax.swing.JDialog {
         } else {
             int i = lsCuenta.getSelectedIndex();
             cuenta = listaCuenta.get(i - 1);
+            numeroMovimiento(cuenta.getCuenCodigo());
             txtSaldo.setText(String.valueOf(cuenta.getCuenSaldo()));
             txtFecha.setText(cuenta.getCuenFechaCreacion().toString());
+            panelAccion(true);
         }    }//GEN-LAST:event_lsCuentaActionPerformed
 
     private void lsCuentaDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lsCuentaDestinoActionPerformed
@@ -445,12 +469,20 @@ public class Movimientos extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_fechaOperacionActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnAccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccionActionPerformed
+        panelDestino(estado);
         llenarEmpleado();
         fechaOperacion.setText(new Date().toString());
 
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    }//GEN-LAST:event_btnAccionActionPerformed
+    void updateTabla() {
+        MainBank.modelo.setRowCount(0);
+        try {
+            MainBank.listar();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainBank.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (lsEmpleado.getSelectedIndex() != 0) {
             int i = lsEmpleado.getSelectedIndex();
@@ -463,7 +495,6 @@ public class Movimientos extends javax.swing.JDialog {
         if (estado) {
             destino = cuentaDestino.getCuenCodigo();
         }
-        System.out.println(t.getTipoDescripcion());
         TipoMovimiento tipo = MovimientoOperacion.seleccion(t.getTipoDescripcion().toUpperCase(), destino);
         tipo.setCuenta(cuenta);
         tipo.setMoviNumero(numeroMov);
@@ -474,6 +505,8 @@ public class Movimientos extends javax.swing.JDialog {
         boolean accion = movimientosLogica.saveMovimiento(tipo, destino);
         if (accion) {
             JOptionPane.showMessageDialog(null, "Movimiento Guardado");
+            updateTabla();
+            this.setVisible(false);
         } else {
             JOptionPane.showMessageDialog(null, "Movimiento Rechazado");
         }
@@ -527,9 +560,9 @@ public class Movimientos extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAccion;
     private javax.swing.JTextField fechaOperacion;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -542,13 +575,13 @@ public class Movimientos extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JComboBox<String> lsAccion;
     private javax.swing.JComboBox<String> lsCuenta;
     private javax.swing.JComboBox<String> lsCuentaDestino;
     private javax.swing.JComboBox<String> lsEmpleado;
+    private javax.swing.JPanel pAccion;
     private javax.swing.JPanel panelDestino;
     private javax.swing.JTextField txtAccion;
     private javax.swing.JTextField txtFecha;

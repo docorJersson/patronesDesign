@@ -5,11 +5,13 @@
  */
 package patronesDesign.logica;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import static java.time.Instant.now;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -26,6 +28,7 @@ public class movimientosLogica {
     static PreparedStatement ps;
     static Connection cs;
     static ResultSet rs;
+    static CallableStatement ct;
 
     public static ArrayList<TipoMovimiento> listMovimientos() {
         String sql = "select * from tipomovimiento";
@@ -59,7 +62,7 @@ public class movimientosLogica {
     }
 
     public static boolean saveMovimiento(TipoMovimiento m, String c) {
-        boolean accion=false;
+        boolean accion = false;
         String sql = "insert into movimiento values (?,?,?,?,?,?,?)";
         try {
             cs = Conexion.getConexion();
@@ -74,10 +77,39 @@ public class movimientosLogica {
             ps.setString(7, destino);
             ps.execute();
             m.movimiento();
-            accion=true;
+            accion = true;
         } catch (SQLException ex) {
             Logger.getLogger(movimientosLogica.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                Conexion.disconnect();
+            } catch (SQLException ex) {
+                Logger.getLogger(movimientosLogica.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return accion;
+    }
+
+    public static int numeroMovimiento(String cuenta) {
+        String sql = "{call numeroMov(?,?)}";
+        int numero = 0;
+        try {
+            cs = Conexion.getConexion();
+            ct = cs.prepareCall(sql);
+            ct.setString(1, cuenta);
+            ct.registerOutParameter(2, Types.INTEGER);
+            ct.executeUpdate();
+            numero = ct.getInt(2);
+            ct.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(movimientosLogica.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                Conexion.disconnect();
+            } catch (SQLException ex) {
+                Logger.getLogger(movimientosLogica.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return numero;
     }
 }
